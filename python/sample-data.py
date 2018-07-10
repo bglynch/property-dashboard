@@ -1,3 +1,5 @@
+import json
+
 data = {
   'http://www.daft.ie/cork/houses-for-sale/ballineen/main-street-ballineen-cork-1792868/': {
     'beds': 3,
@@ -475,3 +477,8 @@ data = {
     'open_viewing': 'no'
   }
 }
+
+
+with open('data/sampledata.json', 'w') as fout:
+    json.dump(data, fout, sort_keys=True,indent=4, separators=(',', ': '))
+    
