@@ -12,7 +12,7 @@ def format_html_to_xml_soup(url):
     source = urlopen(url).read()
     return BeautifulSoup(source, 'lxml')
 
-def get_number_of_pagination_pages(x):
+def get_number_of_pagination_pages(soup):
     number_properties = soup.find(id="sr-sort").next_sibling.next_sibling.next_sibling.next_sibling.string
     x = list(number_properties)
     y=""
@@ -64,6 +64,27 @@ def get_data_from_each_page(urls):
     
     return full_dict_of_data
 
+def dict_of_data(dict_of_data):
+    for k, v in dict_of_data.items():
+        # if v['ber_classification'] == 'SINo666of2006exempt':
+        #     v['ber_classification'] = 'BER Exempt'
+        del v['environment']
+        del v['platform']
+        del v['currency']
+        del v['ad_ids']
+        v['price'] = int(v['price'])
+        v['longitude'] = float(v['longitude'])
+        v['latitude'] = float(v['latitude'])
+        v['surface'] = float(v['surface'])
+        v['beds'] = int(v['beds'])
+        v['seller_id'] = int(v['seller_id'])
+        v['bathrooms'] = int(v['bathrooms'])
+        v['no_of_photos'] = int(v['no_of_photos'])
+        v['facility'] = (v['facility']).split(",")
+
+    return dict_of_data
+
+
 # ===================================================================
 
 # URL = location('dublin', 'ranelagh')
@@ -74,19 +95,28 @@ def get_data_from_each_page(urls):
 
 # urls = get_urls_for_each_page(URL, number_of_pages)  
 
+# raw_data = get_data_from_each_page(urls)
 
- 
-sample_data = [
-    'http://www.daft.ie/dublin/houses-for-sale/ranelagh/2-elmpark-avenue-ranelagh-dublin-1723164/', 
-    'http://www.daft.ie/dublin/houses-for-sale/ranelagh/35-beechwood-avenue-upper-ranelagh-dublin-1720287/',
-    'http://www.daft.ie/dublin/houses-for-sale/ranelagh/46-warners-lane-dartmouth-road-ranelagh-dublin-1720285/',
-    'http://www.daft.ie/dublin/houses-for-sale/ranelagh/3-rhodaville-place-mount-pleasant-avenue-lower-ranelagh-dublin-1710958/',
-] 
+# parsed_data = dict_of_data(raw_data)
+
+# ====================================================================
+# sample_data = [
+#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/2-elmpark-avenue-ranelagh-dublin-1723164/', 
+#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/35-beechwood-avenue-upper-ranelagh-dublin-1720287/',
+#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/46-warners-lane-dartmouth-road-ranelagh-dublin-1720285/',
+#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/3-rhodaville-place-mount-pleasant-avenue-lower-ranelagh-dublin-1710958/',
+# ] 
         
-data = get_data_from_each_page(sample_data)    
+# data = get_data_from_each_page(sample_data)    
    
+# ==================GET 20 PAGES FROM DUBLIN==================================================
 
-
-pp = pprint.PrettyPrinter(indent=4)
-print(data)
-print(type(data)) 
+URL = location('cork', '')
+soup = format_html_to_xml_soup(URL)
+urls = get_urls_for_each_page(URL, 2)
+raw_data = get_data_from_each_page(urls)
+# parsed_date = dict_of_data(raw_data)
+print('=================')
+print('=================')
+print('=================')
+print(raw_data)
