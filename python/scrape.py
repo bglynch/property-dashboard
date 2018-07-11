@@ -63,21 +63,20 @@ def get_data_from_each_page(urls):
     return full_dict_of_data
 
 def parse_the_data(data):
-  for v in data:
-    del v['environment']
-    del v['platform']
-    del v['currency']
-    del v['ad_ids']
-    v['price'] = int(v['price'])
-    v['longitude'] = float(v['longitude'])
-    v['latitude'] = float(v['latitude'])
-    v['surface'] = float(v['surface'])
-    v['beds'] = int(v['beds'])
-    v['seller_id'] = int(v['seller_id'])
-    v['bathrooms'] = int(v['bathrooms'])
-    v['no_of_photos'] = int(v['no_of_photos'])
-    v['facility'] = (v['facility']).split(",")
-
+    for v in data:
+        del v['environment']
+        del v['platform']
+        del v['currency']
+        del v['ad_ids']
+        v['price'] = int(v['price'])
+        v['longitude'] = float(v['longitude'])
+        v['latitude'] = float(v['latitude'])
+        v['surface'] = float(v['surface'])
+        v['beds'] = int(v['beds'])
+        v['seller_id'] = int(v['seller_id'])
+        v['bathrooms'] = int(v['bathrooms'])
+        v['no_of_photos'] = int(v['no_of_photos'])
+        v['facility'] = (v['facility']).split(",")
     return data
 
 
