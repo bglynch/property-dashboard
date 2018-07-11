@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import re
 import pprint
-import csv
+import json
 
 
 def location(county, locality):
@@ -39,7 +39,7 @@ def get_urls_for_each_page(url, number_of_pages):
 
 def get_data_from_each_page(urls):
     parsed_list = []
-    full_dict_of_data = {}
+    full_dict_of_data = []
     
     for page in urls:
         parsed_single_page = format_html_to_xml_soup(page)
@@ -53,36 +53,32 @@ def get_data_from_each_page(urls):
             parsed_list.append(i.replace('"', '').replace('{', '').replace('}', ''))
         
         # split list into 2 lists
-        data_key = [i.split(':', 1)[0] for i in parsed_list]
-        data_value = [i.split(':', 1)[1] for i in parsed_list]
+        dictionary_keys = [i.split(':', 1)[0] for i in parsed_list]
+        dictionary_values = [i.split(':', 1)[1] for i in parsed_list]
         # combine 2 lists into dictionary
-        dictionary = dict(zip(data_key, data_value))
-        # update dictionarry
-        # property_area = dictionary.get('property_title').split(', ')[-1]
-        # dictionary.update({'ber_number': (number_from_text)[0], 'property_area': property_area})
-        full_dict_of_data[page] = dictionary
+        dictionary = dict(zip(dictionary_keys, dictionary_values))
+        dictionary['url'] = page
+        full_dict_of_data.append(dictionary)
     
     return full_dict_of_data
 
-def dict_of_data(dict_of_data):
-    for k, v in dict_of_data.items():
-        # if v['ber_classification'] == 'SINo666of2006exempt':
-        #     v['ber_classification'] = 'BER Exempt'
-        del v['environment']
-        del v['platform']
-        del v['currency']
-        del v['ad_ids']
-        v['price'] = int(v['price'])
-        v['longitude'] = float(v['longitude'])
-        v['latitude'] = float(v['latitude'])
-        v['surface'] = float(v['surface'])
-        v['beds'] = int(v['beds'])
-        v['seller_id'] = int(v['seller_id'])
-        v['bathrooms'] = int(v['bathrooms'])
-        v['no_of_photos'] = int(v['no_of_photos'])
-        v['facility'] = (v['facility']).split(",")
+def parse_the_data(data):
+  for v in data:
+    del v['environment']
+    del v['platform']
+    del v['currency']
+    del v['ad_ids']
+    v['price'] = int(v['price'])
+    v['longitude'] = float(v['longitude'])
+    v['latitude'] = float(v['latitude'])
+    v['surface'] = float(v['surface'])
+    v['beds'] = int(v['beds'])
+    v['seller_id'] = int(v['seller_id'])
+    v['bathrooms'] = int(v['bathrooms'])
+    v['no_of_photos'] = int(v['no_of_photos'])
+    v['facility'] = (v['facility']).split(",")
 
-    return dict_of_data
+    return data
 
 
 # ===================================================================
@@ -97,26 +93,36 @@ def dict_of_data(dict_of_data):
 
 # raw_data = get_data_from_each_page(urls)
 
-# parsed_data = dict_of_data(raw_data)
+# data = parse_the_data(raw_data)
 
 # ====================================================================
-# sample_data = [
-#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/2-elmpark-avenue-ranelagh-dublin-1723164/', 
-#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/35-beechwood-avenue-upper-ranelagh-dublin-1720287/',
-#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/46-warners-lane-dartmouth-road-ranelagh-dublin-1720285/',
-#     'http://www.daft.ie/dublin/houses-for-sale/ranelagh/3-rhodaville-place-mount-pleasant-avenue-lower-ranelagh-dublin-1710958/',
-# ] 
+
         
 # data = get_data_from_each_page(sample_data)    
    
 # ==================GET 20 PAGES FROM DUBLIN==================================================
 
-URL = location('cork', '')
+URL = location('dublin', '')
+print("=========================================")
+print("===================01======================")
+print(URL)
 soup = format_html_to_xml_soup(URL)
-urls = get_urls_for_each_page(URL, 2)
+print("=========================================")
+print("===================02======================")
+print(soup)
+urls = get_urls_for_each_page(URL, 3)
+print("=========================================")
+print("===================03======================")
+print(urls)
 raw_data = get_data_from_each_page(urls)
-# parsed_date = dict_of_data(raw_data)
-print('=================')
-print('=================')
-print('=================')
+print("=========================================")
+print("===================04======================")
 print(raw_data)
+data = parse_the_data(raw_data)
+print("=========================================")
+print("===================05======================")
+print(data)
+
+with open('data/sampledata.json', 'w') as fout:
+    json.dump(data, fout, sort_keys=True,indent=4, separators=(',', ': '))
+
