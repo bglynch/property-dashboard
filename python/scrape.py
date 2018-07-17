@@ -68,10 +68,16 @@ def parse_the_data(data):
         del v['platform']
         del v['currency']
         del v['ad_ids']
-        v['price'] = int(v['price'])
+        if 'price' in v:
+            v['price'] = int(v['price'])
+        else:
+            v['price'] = "Not Given"
         v['longitude'] = float(v['longitude'])
         v['latitude'] = float(v['latitude'])
-        v['surface'] = float(v['surface'])
+        if 'surface' in v:
+            v['surface'] = float(v['surface'])
+        else:
+            v['surface'] = "Not Given"
         v['beds'] = int(v['beds'])
         v['seller_id'] = int(v['seller_id'])
         v['bathrooms'] = int(v['bathrooms'])
@@ -79,6 +85,13 @@ def parse_the_data(data):
         v['facility'] = (v['facility']).split(",")
     return data
 
+def filter_data(list_of_dict_data):
+  updated_list = []
+  for v in list_of_dict_data:
+    if v['surface'] != "Not Given" and v['price'] != "Not Given":
+      updated_list.append(v)
+      
+  return updated_list
 
 # ===================================================================
 
@@ -101,25 +114,39 @@ def parse_the_data(data):
    
 # ==================GET 20 PAGES FROM DUBLIN==================================================
 
-URL = location('dublin', '')
 print("=========================================")
-print("===================01======================")
+print("===================URL======================")
+URL = location('dublin-city', 'dublin-6')
 print(URL)
-soup = format_html_to_xml_soup(URL)
+
 print("=========================================")
-print("===================02======================")
+print("===================SOUP======================")
+soup = format_html_to_xml_soup(URL)
 print(soup)
-urls = get_urls_for_each_page(URL, 3)
+
+print("=========================================")
+print("===================SOUP======================")
+number_of_pages = get_number_of_pagination_pages(soup)
+print(number_of_pages)
+
 print("=========================================")
 print("===================03======================")
+urls = get_urls_for_each_page(URL, number_of_pages)
 print(urls)
-raw_data = get_data_from_each_page(urls)
+
+
+
 print("=========================================")
 print("===================04======================")
+raw_data = get_data_from_each_page(urls)
 print(raw_data)
-data = parse_the_data(raw_data)
+with open('data/testdata.json', 'w') as tout:
+    json.dump(raw_data, tout, sort_keys=True,indent=4, separators=(',', ': '))
+
 print("=========================================")
 print("===================05======================")
+unfiltered_data = parse_the_data(raw_data)
+data = filter_data(unfiltered_data)
 print(data)
 
 with open('data/sampledata.json', 'w') as fout:
