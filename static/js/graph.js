@@ -11,6 +11,11 @@ function makeGraphs(error, propertyData){
         // d.surface = parseFloat(d.surface);
         // d.price = parseInt(d["price"]);
     });
+    var helloDim = ndx.dimension(dc.pluck('price_type'));
+    helloDim.filter("on-application");
+    ndx.remove(); 
+    helloDim.filterAll();
+
     
     show_areas_of_properties(ndx);
     show_average_price(ndx);
@@ -118,11 +123,10 @@ function show_ber_index(ndx){
         .height(330)
         .dimension(dim)
         .group(fakeGroup)
-        .x(d3.scale.ordinal())
-        .xUnits(dc.units.ordinal)
         .elasticX(true)
         .elasticY(true)
         .transitionDuration(1000)
+        .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal);
 }
 function remove_empty_bins(source_group) {
@@ -278,11 +282,11 @@ function show_bp_area_vs_price(ndx){
             var areaDim = ndx.dimension(dc.pluck('area'));
             var areaGroup = areaDim.group().reduce(
                 function(p,v) {
-                    p.push(v.price/1000);
+                    p.push(v.price);
                     return p;
                 },
                 function(p,v) {
-                    p.splice(p.indexOf(v.price/1000), 1);
+                    p.splice(p.indexOf(v.price), 1);
                     return p;
                 },
                 function() {
@@ -374,5 +378,6 @@ function show_table_of_properties(ndx){
     $('#previous').on('click', previous)    
     
 }
+
 
 
