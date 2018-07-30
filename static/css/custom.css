@@ -12,7 +12,7 @@
 }
 
 #main {
-    margin-top: 125px;
+    margin-top: 25px;
 }
 
 h2>span {
@@ -31,15 +31,72 @@ h2>span {
 
 .bgimage {
   width:100%;
-  height:300px;
+  height:330px;
   background: url('http://www.jasonscholtz.co.za/wp-content/uploads/2018/07/Property-Market-min-1920x480.jpeg');
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
   margin-top: 120px;
   background-position-y: 120px;
+  background-size: 1500px;
 }
-.bgimage h5 {
-  color:white;
-  text-shadow:2px 2px #333;
+.bgimage2 {
+    width: 100%;
+    height: 330px;
+    background: url("../images/dublinBay.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-position-y: 120px;
+    background-size: contain;
+    background-size: 2300px;
+}
+
+
+#areas_of_properties>svg{
+    position: relative;
+    left: -30px;
+}
+#charts02 {
+    margin-top: 25px;
+}
+
+#ber_value>svg {
+    position: relative;
+    left: -27px;
+}
+
+#number_of_beds>svg,#number_of_baths>svg,#property_type>svg,#open-viewing>svg {
+    position: relative;
+    right: 56px;
+    top:-25px;
+}
+
+#main2 {
+    margin-top: 35px;
+}
+
+th.dc-table-head {
+    width: 175px;
+}
+
+td.dc-table-column._3, td.dc-table-column._4  {
+    text-align: right;
+}
+
+th.dc-table-head:nth-child(4), th.dc-table-head:nth-child(5) {
+    text-align: right;
+}
+#results-table {
+    margin-left: 50px;
+}
+i.fas.fa-home, i.fas.fa-dollar-sign {
+    font-size: 80px;
+}
+div#price-per-m2 {
+    margin-top: 50px;
+}
+span.number-display {
+    font-size: 50px;
+    margin-left: 40px;
 }

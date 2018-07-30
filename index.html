@@ -8,7 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" href="static/css/dc.min.css" type="text/css" />
     <link rel="stylesheet" href="static/css/custom.css" type="text/css" />
 
@@ -48,7 +48,7 @@
         <span class="filter-count"></span> properties selected out of <span class="total-count"></span> properties |
         <a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
     </div>
-    
+
     <section class="bgimage">
         <div class="container-fluid">
             <div class="row">
@@ -62,34 +62,22 @@
     </section>
 
     <div class="container" id="main">
-        
-        <div class="row">
-
-
-        </div>
-        <div class="row">
-
-            <div class="col">
+        <h2>Select Your Preferences</h2>
+        <div class="row" id="charts01">
+            <!--Areas-->
+            <div class="col-7">
                 <h3>Areas</h3>
                 <div id="areas_of_properties"></div>
             </div>
-            <div class="col">
-                <h3>Average House Price</h3>
-                <div id="average_property_price"></div>
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="col">
-                <h3>Auctioneer</h3>
-                <div id="auctioneer"></div>
-            </div>
-            <div class="col">
-                <h3>Auctioneer</h3>
+            <!--BER-->
+            <div class="col-5">
+                <h3>BER Values</h3>
                 <div id="ber_value"></div>
             </div>
         </div>
-        <div class="row">
+
+        <!--PIE CHARTS-->
+        <div class="row" id="charts02">
             <div class="col-3">
                 <h3>Beds</h3>
                 <div id="number_of_beds"></div>
@@ -106,37 +94,64 @@
                 <h3>Viewing Type</h3>
                 <div id="open-viewing"></div>
             </div>
-            <!--<div class="col-3">-->
-            <!--    <h3>Seller Type</h3>-->
-            <!--    <div id="seller_type"></div>-->
-            <!--</div>-->
-            <!--<div class="col">-->
-            <!--    <h3>Selling Type</h3>-->
-            <!--    <div id="selling_type"></div>-->
-            <!--</div>-->
+
+        </div>
+    </div>
+
+    <section class="bgimage2"></section>
+
+    <div class="container" id="main2">
+        <!--Auctioneer-->
+        <div class="row">
+            <div class="col-8">
+                <h3>Auctioneer</h3>
+                <div id="auctioneer"></div>
+            </div>
+            <!--Average House Price-->
+            <div class="col-4">
+                <div class="col-12">
+                    <h3>Average House Price</h3>
+                    <div id=""></div>
+                    <i class="fas fa-home"></i> <span class="number-box" id="average_property_price"></span>
+                </div>
+                <div class="col-12" id="price-per-m2">
+
+                    <h3>Price per m2</h3>
+                    <i class="fas fa-dollar-sign"></i> <span class="number-box" id="average_property_price"></span>
+                </div>
+            </div>
         </div>
 
-        <div class="row col-md-12">
+
+        <!--Bubble Chart-->
+        <div class="row col-md-12" id="bubbleChart">
             <h3>Bubble Chart</h3>
             <div id="bubble_chart"></div>
         </div>
-        <div class="row col-md-12">
+
+        <!--Scatter Plot-->
+        <div class="row col-md-12" id="scatterPlot">
             <h3>Scatter Plot</h3>
             <div id="surface_price"></div>
         </div>
-        <div class="row col-md-12">
+
+
+        <!--Box Plot-->
+        <div class="row col-md-12" id="boxPlot">
             <h3>Box Plot</h3>
             <div id="box-plot-area-vs-price"></div>
         </div>
 
-
-        <div class="row col-md-12">
+        <!--Table-->
+        <div class="row" id="table">
             <h3>Table</h3>
-            <div id="results-table"></div>
+            <table id="results-table" class="col-12"></table>
             <div class="col-lg-12" id="paging">
-                Showing <span id="begin"></span>-<span id="end"></span> of <span id="size"></span>.
-                <input id="previous" class="btn" type="Button" value="Previous" />
-                <input id="next" class="btn" type="button" value="Next" />
+                <article>Showing <span id="begin"></span>-<span id="end"></span> of <span id="size"></span>.</article>
+                <input id="previous" class="btn btn-secondary" type="Button" value="Previous" />
+                <input id="next" class="btn btn-secondary" type="button" value="Next" />
+
+
             </div>
         </div>
 

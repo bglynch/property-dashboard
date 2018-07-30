@@ -20,8 +20,7 @@ function makeGraphs(error, propertyData){
     show_number_bedrooms(ndx);
     show_number_bathrooms(ndx);
     show_property_type(ndx);
-    show_seller_type(ndx);
-    show_selling_type(ndx);
+
     show_selling_type(ndx);
     
     show_number_filtered(ndx);
@@ -92,64 +91,51 @@ function show_average_price(ndx){
         ;
 }
 
+
 /*=========================================================BAR CHART - AUCTIONEER*/
-// "seller_name": "Sherry FitzGerald Sundrive",
 function show_auctioneer(ndx){
     var dim = ndx.dimension(dc.pluck('seller_name'));   
     var group = dim.group();    
     
-    dc.barChart('#auctioneer')
-        .width(400)
-        .height(500)
-        .margins({top:10, right:50, bottom:200, left:50})
+    dc.rowChart('#auctioneer')
+        .width(600)
+        .height(330)
         .dimension(dim)
         .group(group)
-        .transitionDuration(500)
-        .x(d3.scale.ordinal())
-        .xUnits(dc.units.ordinal)
-        .elasticY(true)
-        .xAxisLabel("Gender")
-        .renderlet(function (chart) {
-                chart.selectAll("g.x text")
-                .attr('dx', '-30')
-                .attr('transform', "translate(-20,0) rotate(-90)");
-            })
-        ;
+        .elasticX(true)
+        .cap(10)
+        .xAxis().ticks(4);
 }
 
 /*=========================================================BAR CHART - BER CLASS*/
-// "seller_name": "Sherry FitzGerald Sundrive",
 function show_ber_index(ndx){
     var dim = ndx.dimension(dc.pluck('ber_classification'));   
     var group = dim.group();    
+    var fakeGroup = remove_empty_bins(group);
     
     dc.barChart('#ber_value')
-        .width(400)
-        .height(300)
-        .margins({top:10, right:50, bottom:30, left:50})
+        .width(450)
+        .height(330)
         .dimension(dim)
-        .group(group)
-        .transitionDuration(500)
+        .group(fakeGroup)
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
+        .elasticX(true)
         .elasticY(true)
-        .xAxisLabel("BER Value")
-        
-        ;
+        .transitionDuration(1000)
+        .xUnits(dc.units.ordinal);
+}
+function remove_empty_bins(source_group) {
+    return {
+        all:function () {
+            return source_group.all().filter(function(d) {
+                return d.value != 0;
+            });
+        }
+    };
 }
 
-/*=========================================================TABLE - URL, ADDRESS, GOOGLEMAP, PRICE*/
-
-
-/*=========================================================FILTER - MAXIMUM PRICE*/
-
-
-/*=========================================================DROP DOWM - TYPE OF HOUSE*/
-
-
-
-
-/*=========================================================PIE CHART - BEDROOMS*/
+/*=========================================================PIE CHART */
 function show_number_bedrooms(ndx){
     var dim = ndx.dimension(dc.pluck('beds'));   
     var group = dim.group();
@@ -157,12 +143,11 @@ function show_number_bedrooms(ndx){
     dc.pieChart("#number_of_beds")
         .height(300)
         .radius(100)
+        .transitionDuration(100)
         .dimension(dim)
         .group(group)
         .minAngleForLabel(.2);
 }
-
-/*=========================================================PIE CHART - BATHROOMS*/
 function show_number_bathrooms(ndx){
     var dim = ndx.dimension(dc.pluck('bathrooms'));   
     var group = dim.group();
@@ -170,12 +155,11 @@ function show_number_bathrooms(ndx){
     dc.pieChart("#number_of_baths")
         .height(300)
         .radius(100)
+        .transitionDuration(1000)
         .dimension(dim)
         .group(group)
         .minAngleForLabel(.2);
 }
-
-/*=========================================================PIE CHART - PROPERTY TYPE*/
 function show_property_type(ndx){
     var dim = ndx.dimension(dc.pluck('property_type'));   
     var group = dim.group();
@@ -183,35 +167,11 @@ function show_property_type(ndx){
     dc.pieChart("#property_type")
         .height(300)
         .radius(100)
+        .transitionDuration(1000)
         .dimension(dim)
         .group(group)
         .minAngleForLabel(.2);
 }
-/*=========================================================SELLER - PROPERTY TYPE*/
-function show_seller_type(ndx){
-    var dim = ndx.dimension(dc.pluck('seller_type'));   
-    var group = dim.group();
-    
-    dc.pieChart("#seller_type")
-        .height(300)
-        .radius(100)
-        .dimension(dim)
-        .group(group)
-        .minAngleForLabel(.2);
-}
-/*=========================================================SELLING - PROPERTY TYPE*/
-function show_selling_type(ndx){
-    var dim = ndx.dimension(dc.pluck('selling_type'));   
-    var group = dim.group();
-    
-    dc.pieChart("#selling_type")
-        .height(300)
-        .radius(100)
-        .dimension(dim)
-        .group(group)
-        .minAngleForLabel(.2);
-}
-/*=========================================================OPEN VIEWING*/
 function show_selling_type(ndx){
     var dim = ndx.dimension(dc.pluck('open_viewing'));   
     var group = dim.group();
@@ -219,6 +179,7 @@ function show_selling_type(ndx){
     dc.pieChart("#open-viewing")
         .height(300)
         .radius(100)
+        .transitionDuration(1000)
         .dimension(dim)
         .group(group)
         .minAngleForLabel(.2);
@@ -234,7 +195,6 @@ function show_number_filtered(ndx){
 }
 
 /*=========================================================BUBBLE CHART - NUMBER OF HOUSES VS AVG HOUSE PRICE PER LOCATION*/
-// "price": 350000,
 function show_avg_house_price(ndx){
     var areaDim = ndx.dimension(dc.pluck('area'));
     var statsByArea = areaDim.group().reduce(
@@ -262,7 +222,7 @@ function show_avg_house_price(ndx){
 
     
     dc.bubbleChart("#bubble_chart")
-        .width(990)
+        .width(1000)
         .height(400)
         .margins({top: 10, right: 50, bottom: 30, left: 60})
         .dimension(areaDim)
@@ -278,10 +238,11 @@ function show_avg_house_price(ndx){
         .elasticY(true)
         .yAxisPadding(10)
         .elasticX(true)
+        .yAxisLabel("No. House Available")
+        .xAxisLabel("Average House Price")
         .xAxisPadding(500000)
         .maxBubbleRelativeSize(0.07);
 }
-
 
 /*=========================================================SCATTER PLOT - HOUSE PRICE VS FLOOR AREA*/
 function show_price_to_floor_area(ndx){
@@ -295,8 +256,8 @@ function show_price_to_floor_area(ndx){
     var maxArea = areaDim.top(1)[0].surface;
     
     dc.scatterPlot("#surface_price")
-        .width(800)
-        .height(400)
+        .width(1000)
+        .height(500)
         .x(d3.scale.linear().domain([minArea, maxArea+0.1*maxArea]))
         .symbolSize(5)
         .clipPadding(5)
@@ -307,10 +268,10 @@ function show_price_to_floor_area(ndx){
         })
         .dimension(priceDim)
         .group(xGroup)
+        .rescale(true)
+        .yAxisPadding(200000)
         .margins({top:10, right:50, bottom:50, left:100});
 }
-
-
 
 /*=========================================================BOX PLOT - AREA VS PRICE*/
 function show_bp_area_vs_price(ndx){
@@ -332,13 +293,12 @@ function show_bp_area_vs_price(ndx){
             dc.boxPlot("#box-plot-area-vs-price")
                 .width(1000)
                 .height(400)
-                .margins({top: 10, right: 80, bottom: 30, left: 80})
+                .margins({top: 20, right: 80, bottom: 30, left: 80})
                 .dimension(areaDim)
                 .group(areaGroup)
                 .x(d3.scale.ordinal())
                 .elasticY(true)
-                // .yAxisPadding(500000)
-                // .xAxisPadding(4000000)
+                .yAxisPadding(200)
                 .xUnits(dc.units.ordinal);    
 }
 /*=========================================================TABLE*/
@@ -355,18 +315,20 @@ function show_table_of_properties(ndx){
                     .group(function(d){
                         return '';
                     })
+                    .width(500)
                     .size(Infinity)
                     .columns([
                         {
                             label: "View Advert",
-                            format: function (d) {
-                                return `
-                                    <a href="${d.url}" target="_blank">
-                                        Link
-                                    </a>`;
-                            }
+                            format: function (d) {return `<a href="${d.url}" target="_blank">Daft.ie Link</a>`;}
                         },
-                        "area"
+                        {
+                            label: "Location",
+                            format: function(d) { return '<a href=\"http://maps.google.com/maps?z=11&t=m&q=loc:' + d.latitude + '+' + d.longitude +"\" target=\"_blank\">Google Map</a>"}},
+                        "area",
+                        "price",
+                        "surface",
+                        
                     ]
                 );
     
