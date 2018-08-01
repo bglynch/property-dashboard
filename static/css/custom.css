@@ -100,3 +100,22 @@ span.number-display {
     font-size: 50px;
     margin-left: 40px;
 }
+
+.btn-secondary:disabled {
+    visibility: hidden;
+}
+
+.dc-chart .brush rect.extent {
+    fill: #ff980070;
+    fill-opacity: 1;
+}
+
+text.whisker, text.box{
+    visibility: hidden;
+}
+
+
+text.box:nth-of-type(2) {
+    visibility: visible;
+    fill: red;
+}
