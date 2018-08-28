@@ -124,7 +124,7 @@ def filter_data(list_of_dict_data):
 
 print("=========================================")
 print("===================URL======================")
-URL = location('dublin-city', 'ranalagh')
+URL = location('dublin', 'ranalagh')
 print(URL)
 
 print("=========================================")
