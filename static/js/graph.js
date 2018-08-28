@@ -1,9 +1,12 @@
 /* global crossfilter, dc, d3, queue, $ */
 
+//--------------------------------------------------- SECTION 01 - LOAD THE DATA
 queue()
     .defer(d3.json, "data/sampledata.json")
     .await(makeGraphs);
+
     
+//--------------------------------------------------- SECTION 02 - CROSSFILTER THE DATA AND PARSE
 function makeGraphs(error, propertyData){
     var ndx = crossfilter(propertyData);
     
@@ -16,7 +19,6 @@ function makeGraphs(error, propertyData){
     ndx.remove(); 
     helloDim.filterAll();
 
-    
     show_areas_of_properties(ndx);
     show_average_price(ndx);
     show_auctioneer(ndx);
@@ -32,19 +34,20 @@ function makeGraphs(error, propertyData){
     show_price_to_floor_area(ndx);
     show_avg_house_price(ndx);
     show_bp_area_vs_price(ndx);
-    
+
     show_table_of_properties(ndx);
     
     dc.renderAll();
 }
-/*=========================================================ROW CHART - PROPERTY AREAS*/
-// "area": "Rathfarnham",
+
+
+//--------------------------------------------------- SECTION 03 - CODE FOR CHARTS
+//-- ROW CHART - PROPERTY AREAS
 function show_areas_of_properties(ndx){
     var dim = ndx.dimension(dc.pluck('area'));
     var group = dim.group();
     
     dc.rowChart("#areas_of_properties")
-    
         .width(600)
         .height(330)
         .dimension(dim)
@@ -53,8 +56,8 @@ function show_areas_of_properties(ndx){
         .xAxis().ticks(4);
 }
 
-/*=========================================================NUMBER - AVERAGE HOUSE PRICE*/
-// "price": 350000,
+
+//-- NUMBER - AVERAGE HOUSE PRICE
 function show_average_price(ndx){
     var averageHousePrice = ndx.groupAll().reduce(
         function (p,v) {
@@ -97,7 +100,7 @@ function show_average_price(ndx){
 }
 
 
-/*=========================================================BAR CHART - AUCTIONEER*/
+//-- BAR CHART - AUCTIONEER
 function show_auctioneer(ndx){
     var dim = ndx.dimension(dc.pluck('seller_name'));   
     var group = dim.group();    
@@ -112,7 +115,8 @@ function show_auctioneer(ndx){
         .xAxis().ticks(4);
 }
 
-/*=========================================================BAR CHART - BER CLASS*/
+
+//-- BAR CHART - BER CLASS
 function show_ber_index(ndx){
     var dim = ndx.dimension(dc.pluck('ber_classification'));   
     var group = dim.group();    
@@ -139,7 +143,8 @@ function remove_empty_bins(source_group) {
     };
 }
 
-/*=========================================================PIE CHART */
+
+//-- PIE CHARTS
 function show_number_bedrooms(ndx){
     var dim = ndx.dimension(dc.pluck('beds'));   
     var group = dim.group();
@@ -189,7 +194,8 @@ function show_selling_type(ndx){
         .minAngleForLabel(.2);
 }
 
-/*=========================================================NUMBER CHART - HOW MANY FILTER*/
+
+//-- NUMBER CHART - HOW MANY FILTER
 function show_number_filtered(ndx){
 	var group = ndx.groupAll();
     
@@ -198,7 +204,8 @@ function show_number_filtered(ndx){
     	.group(group);
 }
 
-/*=========================================================BUBBLE CHART - NUMBER OF HOUSES VS AVG HOUSE PRICE PER LOCATION*/
+
+//-- BUBBLE CHART - NUMBER OF HOUSES VS AVG HOUSE PRICE PER LOCATION
 function show_avg_house_price(ndx){
     var areaDim = ndx.dimension(dc.pluck('area'));
     var statsByArea = areaDim.group().reduce(
@@ -226,9 +233,9 @@ function show_avg_house_price(ndx){
 
     
     dc.bubbleChart("#bubble_chart")
-        .width(1000)
+        .width(1200)
         .height(400)
-        .margins({top: 10, right: 50, bottom: 30, left: 60})
+        .margins({top: 10, right: 50, bottom: 50, left: 50})
         .dimension(areaDim)
         .group(statsByArea)
         .keyAccessor(function (p) {return p.value.average;})
@@ -242,71 +249,79 @@ function show_avg_house_price(ndx){
         .elasticY(true)
         .yAxisPadding(10)
         .elasticX(true)
-        .yAxisLabel("No. House Available")
+        .yAxisLabel("Properties Available")
         .xAxisLabel("Average House Price")
         .xAxisPadding(500000)
         .maxBubbleRelativeSize(0.07);
 }
 
-/*=========================================================SCATTER PLOT - HOUSE PRICE VS FLOOR AREA*/
+
+//-- SCATTER PLOT - HOUSE PRICE VS FLOOR AREA
 function show_price_to_floor_area(ndx){
     var areaDim = ndx.dimension(dc.pluck("surface"));
     var priceDim = ndx.dimension(function(d){
         return [d.surface, d.price];
     });
     var xGroup = priceDim.group();
+    var fakeGroup = remove_empty_bins(xGroup);
     
     var minArea = areaDim.bottom(1)[0].surface;
     var maxArea = areaDim.top(1)[0].surface;
     
     dc.scatterPlot("#surface_price")
-        .width(1000)
-        .height(500)
-        .x(d3.scale.linear().domain([minArea, maxArea+0.1*maxArea]))
-        .symbolSize(5)
-        .clipPadding(5)
-        .yAxisLabel("Price")
-        .xAxisLabel("Surface Area (m2)")
-        .title(function(d){
-            return "Hello" + d.key[1];
-        })
         .dimension(priceDim)
-        .group(xGroup)
+        .group(fakeGroup)
+        .width(1200)
+        .height(400)
+        .transitionDuration(500)
+        .x(d3.scale.linear().domain([0, maxArea+0.1*maxArea]))
+        .symbolSize(5)
+        // .clipPadding(5)
+        .yAxisLabel("Asking Price")
+        .xAxisLabel("Surface Area (m2)")
         .rescale(true)
         .yAxisPadding(200000)
-        .margins({top:10, right:50, bottom:50, left:100});
+        .margins({top: 10, right: 50, bottom: 60, left: 80});
 }
 
-/*=========================================================BOX PLOT - AREA VS PRICE*/
+
+//-- BOX PLOT - AREA VS PRICE
 function show_bp_area_vs_price(ndx){
-            var areaDim = ndx.dimension(dc.pluck('area'));
-            var areaGroup = areaDim.group().reduce(
-                function(p,v) {
-                    p.push(v.price);
-                    return p;
-                },
-                function(p,v) {
-                    p.splice(p.indexOf(v.price), 1);
-                    return p;
-                },
-                function() {
-                    return [];
-                }
-            );
-
-            dc.boxPlot("#box-plot-area-vs-price")
-                .width(1000)
-                .height(400)
-                .margins({top: 20, right: 80, bottom: 30, left: 80})
-                .dimension(areaDim)
-                .group(areaGroup)
-                .x(d3.scale.ordinal())
-                .elasticY(true)
-                .yAxisPadding(200)
-                .xUnits(dc.units.ordinal);    
+    var areaDim = ndx.dimension(dc.pluck('area'));
+    var areaGroup = areaDim.group().reduce(
+        function(p,v) {
+            p.push(v.price);
+            return p;
+        },
+        function(p,v) {
+            p.splice(p.indexOf(v.price), 1);
+            return p;
+        },
+        function() {
+            return [];
+        }
+    );
+    
+    var commasFormatter = d3.format(",.0f");
+    
+    dc.boxPlot("#box-plot-area-vs-price")
+        .dimension(areaDim)
+        .group(areaGroup)
+        .width(1200)
+        .height(400)
+        .transitionDuration(500)
+        .margins({top: 20, right: 80, bottom: 30, left: 80})
+        .elasticY(true)
+        .elasticX(true)
+        .tickFormat(function(d) { return "€" + commasFormatter(d); })
+        .yAxisPadding(100000)
+        .renderHorizontalGridLines(true)
+        ;
+    
 }
-/*=========================================================TABLE*/
 
+
+//-- TABLE
 function show_table_of_properties(ndx){
     const ITEMS_PER_PAGE = 20;
     var offset = 0;
@@ -378,6 +393,3 @@ function show_table_of_properties(ndx){
     $('#previous').on('click', previous)    
     
 }
-
-
-
