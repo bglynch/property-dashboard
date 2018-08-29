@@ -1053,7 +1053,7 @@
         "area": "Sandymount",
         "bathrooms": 1,
         "beds": 2,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 4",
         "facility": [
@@ -1084,7 +1084,7 @@
         "area": "Dartry",
         "bathrooms": 4,
         "beds": 5,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -2051,7 +2051,7 @@
         "area": "Ranelagh",
         "bathrooms": 5,
         "beds": 5,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -2083,7 +2083,7 @@
         "area": "Rathgar",
         "bathrooms": 1,
         "beds": 3,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -2320,7 +2320,7 @@
         "area": "Rathmines",
         "bathrooms": 3,
         "beds": 4,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -2349,7 +2349,7 @@
         "area": "Ballsbridge",
         "bathrooms": 3,
         "beds": 5,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 4",
         "facility": [
@@ -2378,7 +2378,7 @@
         "area": "Sandymount",
         "bathrooms": 4,
         "beds": 5,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 4",
         "facility": [
@@ -2407,7 +2407,7 @@
         "area": "Ranelagh",
         "bathrooms": 3,
         "beds": 5,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -2697,7 +2697,7 @@
         "area": "Ringsend",
         "bathrooms": 1,
         "beds": 2,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 4",
         "facility": [
@@ -2964,7 +2964,7 @@
         "area": "Rathgar",
         "bathrooms": 4,
         "beds": 6,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -3345,7 +3345,7 @@
         "area": "Ranelagh",
         "bathrooms": 7,
         "beds": 7,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -3490,7 +3490,7 @@
         "area": "Ranelagh",
         "bathrooms": 2,
         "beds": 3,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -4751,7 +4751,7 @@
         "area": "Rathmines",
         "bathrooms": 3,
         "beds": 4,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -4780,7 +4780,7 @@
         "area": "Rathmines",
         "bathrooms": 1,
         "beds": 3,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -4809,7 +4809,7 @@
         "area": "Ranelagh",
         "bathrooms": 2,
         "beds": 3,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [
@@ -6477,7 +6477,7 @@
         "area": "Ranelagh",
         "bathrooms": 2,
         "beds": 4,
-        "ber_classification": "SINo666of2006exempt",
+        "ber_classification": "N/A",
         "county": "Dublin",
         "dublin_region": "Dublin 6",
         "facility": [

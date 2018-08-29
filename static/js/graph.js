@@ -21,9 +21,10 @@ function makeGraphs(error, propertyData){
 
     show_areas_of_properties(ndx);
     show_average_price(ndx);
+    
     show_auctioneer(ndx);
     show_ber_index(ndx);
-    
+    show_price_per_m2(ndx);
     show_number_bedrooms(ndx);
     show_number_bathrooms(ndx);
     show_property_type(ndx);
@@ -99,6 +100,50 @@ function show_average_price(ndx){
         ;
 }
 
+//-- NUMBER - PRICE PER M2
+function show_price_per_m2(ndx){
+    var averageHousePrice = ndx.groupAll().reduce(
+        function (p,v) {
+            p.count++;
+            p.total += v.price;
+            p.floor += v.surface;
+            p.average = p.total / p.floor;
+            return p;
+        },
+        function (p,v) {
+            p.count--;
+            if(p.count == 0){ 
+                p.total = 0;
+                p.average = 0;
+                
+            }
+            else{
+                p.total -= v.price;
+                p.floor -= v.surface;
+                p.average = p.total / p.floor; 
+            }
+            return p;
+        },
+        function () {
+            return {count: 0,total: 0,floor:0,average: 0};
+        }
+        
+    );
+    
+    dc.numberDisplay("#price_per_m2")
+        // .formatNumber(d3.format(".2"))
+        .valueAccessor(function (d){
+            if (d.count == 0){
+                return 0;
+            }
+            else{
+                return d.average;
+            }
+        })
+        .group(averageHousePrice)
+        ;
+}
+
 
 //-- BAR CHART - AUCTIONEER
 function show_auctioneer(ndx){
@@ -129,6 +174,7 @@ function show_ber_index(ndx){
         .group(fakeGroup)
         .elasticX(true)
         .elasticY(true)
+        
         .transitionDuration(1000)
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal);
