@@ -29,7 +29,7 @@ function makeGraphs(error, propertyData){
     show_number_bathrooms(ndx);
     show_property_type(ndx);
 
-    show_selling_type(ndx);
+    show_property_value(ndx);
     
     show_number_filtered(ndx);
     show_price_to_floor_area(ndx);
@@ -227,11 +227,24 @@ function show_property_type(ndx){
         .group(group)
         .minAngleForLabel(.2);
 }
-function show_selling_type(ndx){
-    var dim = ndx.dimension(dc.pluck('open_viewing'));   
+function show_property_value(ndx){
+    var dim = ndx.dimension(function(d){
+        if (d['price'] < 500000){
+            return "< 500k";
+        }
+        else if (d['price'] < 750000){
+            return "500k to 750k";
+        }
+        else if (d['price'] < 1200000){
+            return "750k to 1.2M";
+        }
+        else{
+            return '> 1.2M +';
+        }
+    });   
     var group = dim.group();
     
-    dc.pieChart("#open-viewing")
+    dc.pieChart("#property_value")
         .height(300)
         .radius(100)
         .transitionDuration(1000)
@@ -239,6 +252,18 @@ function show_selling_type(ndx){
         .group(group)
         .minAngleForLabel(.2);
 }
+// function show_selling_type(ndx){
+//     var dim = ndx.dimension(dc.pluck('open_viewing'));   
+//     var group = dim.group();
+    
+//     dc.pieChart("#open-viewing")
+//         .height(300)
+//         .radius(100)
+//         .transitionDuration(1000)
+//         .dimension(dim)
+//         .group(group)
+//         .minAngleForLabel(.2);
+// }
 
 
 //-- NUMBER CHART - HOW MANY FILTER
