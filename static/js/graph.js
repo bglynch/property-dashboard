@@ -369,7 +369,7 @@ function show_bp_area_vs_price(ndx){
 
 //-- TABLE
 function show_table_of_properties(ndx){
-    const ITEMS_PER_PAGE = 20;
+    const ITEMS_PER_PAGE = 10;
     var offset = 0;
     var filteredTotal = ndx.groupAll();
     var previousFilteredTotalValue = filteredTotal.value();
@@ -385,15 +385,21 @@ function show_table_of_properties(ndx){
                     .columns([
                         {
                             label: "View Advert",
-                            format: function (d) {return `<a href="${d.url}" target="_blank">Daft.ie Link</a>`;}
+                            format: function (d) {return `<a href="${d.url}" target="_blank">Daft.ie  <i class="fas fa-external-link-alt"></i></a>`;}
+                        },
+                        "area",
+                        {
+                            label: "View on Google Maps",
+                            format: function(d) { return '<a href=\"http://maps.google.com/maps?z=11&t=m&q=loc:' + d.latitude + '+' + d.longitude +"\" target=\"_blank\"><i class='fas fa-map-marked-alt'></i></a>"}},
+                        {
+                            label: "Price",
+                            format: function (d) {return '€ '+ d.price.toLocaleString();}
                         },
                         {
-                            label: "Location",
-                            format: function(d) { return '<a href=\"http://maps.google.com/maps?z=11&t=m&q=loc:' + d.latitude + '+' + d.longitude +"\" target=\"_blank\">Google Map</a>"}},
-                        "area",
-                        "price",
-                        "surface",
-                        
+                            label: "Floor Area",
+                            format: function (d) {return Math.floor(d.surface)+' m2';}
+                        },
+
                     ]
                 );
     
