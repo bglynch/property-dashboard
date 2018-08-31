@@ -7,23 +7,30 @@ The current version of the website is for people who have an interest in the pro
 This includes persons looking to buy or sell there home, property auctioneers or builders looking to flip a property.
 
 ### What does it do?
+THIS WEBSITE GIVES
+
 Gives the user a graphical representation of houses for sale in the form of a Data Dashboard.  
+IT IS AN INTERACTIVE DASHBOARD WHICH ALLOWS THE USER TO FILTER ON DATA POINTS OF INTEREST TO THEM. THE USER CAN SELECT DATA IN ONE CHART TO APPLY A FILTER TO ALL CHARTS ON THE DASHBOARD. 
+
 It is built to be interactive so the data can be filtered to show data that the user choses.
 
 ### How does it work?
+
+BUILDING THIS PROJECT INVOLVED A 2 PART PROCESS
+
 This was a 2 part process:
 1.  Using python to scrape data from [Daft.ie](https://www.daft.ie/).  
     Daft.ie is Ireland's largest property website. 9 out of every 10 properties for sale in Ireland are advertised on Daft.ie.
-2.  Use javascript libraries to visualise the dataset
+2.  Using JavaScript libraries to visualise the dataset
 
 ## Obtaining the Dataset
-To preform the web scraping **Python 3** was used with **Beautifulsoup** and **urllib3**.  
-[Here](docs/functions.md) is a link to the functions documentation.
+To perform the web scraping **Python 3** was used with **Beautifulsoup** and **urllib3**.  
+[Here](docs/functions.md) is a link to documentation describing the functions I have written to scrape daft.ie and collect the data.
 
 ## Displaying the Dataset  
-The dataset is displayed as a dashboard. This was done using a mix of technologies.  
+The dataset is displayed as a dashboard of interactive charts. This was done using a mix of technologies.  
 The website is styled with **Bootstrap**.  
-The charts are drawn and made interactive using **D3.js**, **dc.js** and **Crossfilter.js**  
+The charts are drawn and made interactive using **D3.js**, **dc.js** and **Crossfilter.js**. 
 **queue.js** is also utilised to ensure that the dataset is loaded before the browser creates the charts.
 
 - [**Bootstrap**](https://getbootstrap.com/) - Front-end framework for faster and easier web development  
@@ -34,6 +41,8 @@ The charts are drawn and made interactive using **D3.js**, **dc.js** and **Cross
 ## Folders and Files
 - **./data**  
     Contains existing datasets  
+
+VIA FILE PATH ISN'T CLEAR
     New datasets are saved here via file path and filename on _line 38 ./pyhton/scrape.py_
 - **./docs**  
     Contains documentation files to support the ReadMe
@@ -43,13 +52,13 @@ The charts are drawn and made interactive using **D3.js**, **dc.js** and **Cross
     - **/css**  
     Contain css styling files
     - **/images**  
-    Contains images displayed on the website.
+    Contains images displayed on the website
     - **/js**  
     Contains all javascript files for the website
 - **./index.html**
 
 ## Installation
-Follow the below instructions to get this project up & running on Mac (commands will be slightly different for Windows)
+Follow the below instructions to get this project up & running locally on a Mac (commands will be slightly different for Windows)
 
 ## Deployment and Hosting
 This website was deployed using github pages
@@ -59,15 +68,17 @@ This Application was tested manually across a range of browsers.
 
 [WebPageTest](https://www.webpagetest.org/) - Testing the website preformance  
 [Lighthouse Chrome Extension](https://developers.google.com/web/tools/lighthouse/) - performance, quality, and correctness of your web app  
+
+I also used the following validators to validate my code.
 [W3C](https://validator.w3.org/) - HTML markup validator  
 [W3C](http://jigsaw.w3.org/css-validator/) - CSS markup validator
 
 ## Issues
-As this is a the databse is collected via. web scraping, the code is succeptible to breaking if the html layout of the scraped web page is altered. 
+Given that the data is collected via. web scraping, the code is succeptible to breaking if the html layout of the scraped web page is altered. 
 The current version is working as of the most recent commit of the **python/scrape.py** file
 
 ## Content
-This content in the app is for educational use only
+The content in the app is for educational use only
 
 ## Credits
 Regular Expressions - [regex101](https://regex101.com/)
@@ -95,32 +106,37 @@ The second image is an picture of Dublin's iconic Ringsend towers, used as the d
 ### User Flow
 The webpage is split into two halves. Using a full width image for the division.  
 
-The first section of the is a set of pie charts and bar charts that the user clicks on the filter the search to what they are looking for. Once the user has chosen their filters they scroll down to the second section.
+The first section of the dashboard is a set of pie charts and bar charts that the user clicks on to apply a filtered search to what they are looking for. Once the user has chosen their filters they scroll down to the second section.
 
 
-Here thet will find  several charts that give them information of the properties availble.  
+Here thet will find several charts that give them information of the properties available. Here is a short description of each chart: 
 
 ##### Auctioneer
 Simple chart that shows the most popular auctioneer in the area. Useful for contact information as they may have more properties in the area that are not availble on Daft.ie.
 
 ##### Average House Price
-Give an average house price for the filtered selection.
-Useful as a rough guide.
+Gives an average house price for the filtered selection.
+Useful as a rough pricing guide.
 
 ##### Price per m2
-The the average price of property per m2. May be useful for estimating the potential value of a renovated house if one was to purchase a 'fixer-upper' property.
+The the average price of a property per m2. May be useful for estimating the potential value of a renovated house if one was to purchase a 'fixer-upper' property.
 
 ##### Bubble Chart
+DESCRIBE THE 2 DIMENSIONS
+
 This is a 3 dimensional chart, although only 2 dimensions are utilised.
 This is a useful chart for getting a quick visual representation of the average house price of each area.
 
 ##### Scatter Plot
-Shows an individual data point for wach property and plots it on an X/Y axis.  
-As can be seen the is a rough correlation of price vs. area.
-If there is a trend line between house price and fllor area a user can see what properties might wbe deemed as better value as they would line below this line.
+Shows an individual data point for each property and plots it on the X and Y axis.  
+As can be seen there is a rough correlation of price vs. area.
+
+ARE WE TALKING A 45 DEGREE LINE HERE? MAKE THIS CLEARER
+
+If there is a trend line between house price and floor area a user can see what properties might be deemed better value as they would fall below this line.
 
 ##### Box Plot
-Give a more accurate indication of the average house price in each area.
+Gives a more accurate indication of the average house price in each area.
 
 ##### Table
 
