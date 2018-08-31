@@ -10,10 +10,6 @@ queue()
 function makeGraphs(error, propertyData){
     var ndx = crossfilter(propertyData);
 
-    propertyData.forEach(function(d){
-        // d.surface = parseFloat(d.surface);
-        // d.price = parseInt(d["price"]);
-    });
     var helloDim = ndx.dimension(dc.pluck('price_type'));
     helloDim.filter("on-application");
     ndx.remove();
@@ -379,9 +375,7 @@ function show_bp_area_vs_price(ndx){
         .yAxisLabel("Asking Price")
         .tickFormat(function(d) { return "€" + commasFormatter(d); })
         .yAxisPadding(100000)
-        .renderHorizontalGridLines(true)
-        ;
-
+        .renderHorizontalGridLines(true);
 }
 
 
@@ -457,12 +451,11 @@ function show_table_of_properties(ndx){
         updateTable();
         table.redraw();
     }
-    $('#next').on('click', next)
+    $('#next').on('click', next);
     function previous() {
         offset -= ITEMS_PER_PAGE;
         updateTable();
         table.redraw();
     }
-    $('#previous').on('click', previous)
-
+    $('#previous').on('click', previous);
 }

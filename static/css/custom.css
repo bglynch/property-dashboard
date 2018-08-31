@@ -67,13 +67,6 @@ h2>span {
     left: -27px;
 }
 
-/*#number_of_beds>svg,#number_of_baths>svg,#property_type>svg,#property_value>svg {
-    position: relative;
-    right: 56px;
-    top:-25px;
-}*/
-
-
 th.dc-table-head {
     width: 175px;
 }
@@ -85,9 +78,7 @@ td.dc-table-column._3, td.dc-table-column._4 , td.dc-table-column._5  {
 th.dc-table-head:nth-child(4), th.dc-table-head:nth-child(5), th.dc-table-head:nth-child(6) {
     text-align: right;
 }
-#results-table {
-    /*margin-left: 50px;*/
-}
+
 i.fas.fa-home, i.fas.fa-dollar-sign {
     font-size: 80px;
 }
@@ -129,12 +120,7 @@ tr.dc-table-group {
 h3 {
     margin-top: 1.5rem;
 }
-/*.row {
-    padding: 0;
-}
-.col-8,.col-7, .col-5,.col-3 {
-    padding: 0;
-}*/
+
 .modal2 {
     position: fixed;
     top: 0;
@@ -262,5 +248,14 @@ h3 {
         background-size: 338%;
         background-position-x: 32%;
         height: 45vw;
+    }
+    nav h2{
+        font-size: 1.6em;
+    }
+    nav img{
+        transform: scale(0.6);
+    }
+    nav .container{
+        margin: 0;
     }
 }
