@@ -52,7 +52,8 @@ The charts are drawn and made interactive using **D3.js**, **dc.js** and **Cross
 - **./index.html**
 
 ## Installation
-Follow the below instructions to get this project up & running locally on a Mac (commands will be slightly different for Windows)
+Follow the below instructions to get this project up & running locally on a Mac (commands will be slightly different for Windows)  
+[Cloning a repository](https://help.github.com/articles/cloning-a-repository/)
 
 ## Deployment and Hosting
 This website was deployed using github pages
