@@ -5,23 +5,23 @@ queue()
     .defer(d3.json, "data/sampledata.json")
     .await(makeGraphs);
 
-    
+
 //--------------------------------------------------- SECTION 02 - CROSSFILTER THE DATA AND PARSE
 function makeGraphs(error, propertyData){
     var ndx = crossfilter(propertyData);
-    
+
     propertyData.forEach(function(d){
         // d.surface = parseFloat(d.surface);
         // d.price = parseInt(d["price"]);
     });
     var helloDim = ndx.dimension(dc.pluck('price_type'));
     helloDim.filter("on-application");
-    ndx.remove(); 
+    ndx.remove();
     helloDim.filterAll();
 
     show_areas_of_properties(ndx);
     show_average_price(ndx);
-    
+
     show_auctioneer(ndx);
     show_ber_index(ndx);
     show_price_per_m2(ndx);
@@ -30,14 +30,14 @@ function makeGraphs(error, propertyData){
     show_property_type(ndx);
 
     show_property_value(ndx);
-    
+
     show_number_filtered(ndx);
     show_price_to_floor_area(ndx);
     show_avg_house_price(ndx);
     show_bp_area_vs_price(ndx);
 
     show_table_of_properties(ndx);
-    
+
     dc.renderAll();
 }
 
@@ -47,7 +47,7 @@ function makeGraphs(error, propertyData){
 function show_areas_of_properties(ndx){
     var dim = ndx.dimension(dc.pluck('area'));
     var group = dim.group();
-    
+
     dc.rowChart("#areas_of_properties")
         .width(600)
         .height(330)
@@ -69,23 +69,23 @@ function show_average_price(ndx){
         },
         function (p,v) {
             p.count--;
-            if(p.count == 0){ 
+            if(p.count == 0){
                 p.total = 0;
                 p.average = 0;
-                
+
             }
             else{
                 p.total -= v.price;
-                p.average = p.total / p.count; 
+                p.average = p.total / p.count;
             }
             return p;
         },
         function () {
             return {count: 0,total: 0,average: 0};
         }
-        
+
     );
-    
+
     dc.numberDisplay("#average_property_price")
         // .formatNumber(d3.format(".2"))
         .valueAccessor(function (d){
@@ -112,24 +112,24 @@ function show_price_per_m2(ndx){
         },
         function (p,v) {
             p.count--;
-            if(p.count == 0){ 
+            if(p.count == 0){
                 p.total = 0;
                 p.average = 0;
-                
+
             }
             else{
                 p.total -= v.price;
                 p.floor -= v.surface;
-                p.average = p.total / p.floor; 
+                p.average = p.total / p.floor;
             }
             return p;
         },
         function () {
             return {count: 0,total: 0,floor:0,average: 0};
         }
-        
+
     );
-    
+
     dc.numberDisplay("#price_per_m2")
         // .formatNumber(d3.format(".2"))
         .valueAccessor(function (d){
@@ -147,9 +147,9 @@ function show_price_per_m2(ndx){
 
 //-- BAR CHART - AUCTIONEER
 function show_auctioneer(ndx){
-    var dim = ndx.dimension(dc.pluck('seller_name'));   
-    var group = dim.group();    
-    
+    var dim = ndx.dimension(dc.pluck('seller_name'));
+    var group = dim.group();
+
     dc.rowChart('#auctioneer')
         .width(600)
         .height(330)
@@ -157,16 +157,18 @@ function show_auctioneer(ndx){
         .group(group)
         .elasticX(true)
         .cap(10)
-        .xAxis().ticks(4);
+        // .xAxisLabel("Number of advertised properties")
+        .xAxis().ticks(4)
+        ;
 }
 
 
 //-- BAR CHART - BER CLASS
 function show_ber_index(ndx){
-    var dim = ndx.dimension(dc.pluck('ber_classification'));   
-    var group = dim.group();    
+    var dim = ndx.dimension(dc.pluck('ber_classification'));
+    var group = dim.group();
     var fakeGroup = remove_empty_bins(group);
-    
+
     dc.barChart('#ber_value')
         .width(450)
         .height(330)
@@ -174,7 +176,7 @@ function show_ber_index(ndx){
         .group(fakeGroup)
         .elasticX(true)
         .elasticY(true)
-        
+        // .brushOn(true)
         .transitionDuration(1000)
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal);
@@ -192,11 +194,11 @@ function remove_empty_bins(source_group) {
 
 //-- PIE CHARTS
 function show_number_bedrooms(ndx){
-    var dim = ndx.dimension(dc.pluck('beds'));   
+    var dim = ndx.dimension(dc.pluck('beds'));
     var group = dim.group();
-    
+
     dc.pieChart("#number_of_beds")
-        .height(300)
+        .height(250)
         .radius(100)
         .transitionDuration(100)
         .dimension(dim)
@@ -204,11 +206,11 @@ function show_number_bedrooms(ndx){
         .minAngleForLabel(.2);
 }
 function show_number_bathrooms(ndx){
-    var dim = ndx.dimension(dc.pluck('bathrooms'));   
+    var dim = ndx.dimension(dc.pluck('bathrooms'));
     var group = dim.group();
-    
+
     dc.pieChart("#number_of_baths")
-        .height(300)
+        .height(250)
         .radius(100)
         .transitionDuration(1000)
         .dimension(dim)
@@ -216,11 +218,11 @@ function show_number_bathrooms(ndx){
         .minAngleForLabel(.2);
 }
 function show_property_type(ndx){
-    var dim = ndx.dimension(dc.pluck('property_type'));   
+    var dim = ndx.dimension(dc.pluck('property_type'));
     var group = dim.group();
-    
+
     dc.pieChart("#property_type")
-        .height(300)
+        .height(250)
         .radius(100)
         .transitionDuration(1000)
         .dimension(dim)
@@ -241,35 +243,24 @@ function show_property_value(ndx){
         else{
             return '> 1.2M +';
         }
-    });   
+    });
     var group = dim.group();
-    
+
     dc.pieChart("#property_value")
-        .height(300)
+        .height(250)
         .radius(100)
         .transitionDuration(1000)
         .dimension(dim)
         .group(group)
         .minAngleForLabel(.2);
 }
-// function show_selling_type(ndx){
-//     var dim = ndx.dimension(dc.pluck('open_viewing'));   
-//     var group = dim.group();
-    
-//     dc.pieChart("#open-viewing")
-//         .height(300)
-//         .radius(100)
-//         .transitionDuration(1000)
-//         .dimension(dim)
-//         .group(group)
-//         .minAngleForLabel(.2);
-// }
+
 
 
 //-- NUMBER CHART - HOW MANY FILTER
 function show_number_filtered(ndx){
 	var group = ndx.groupAll();
-    
+
     dc.dataCount(".dc-data-count")
         .dimension(ndx)
     	.group(group);
@@ -285,11 +276,11 @@ function show_avg_house_price(ndx){
             p.count++; p.total += v.price; p.average = p.total / p.count;
             return p;
         },
-        
+
         // decrease counter
         function (p,v) {
             p.count--;
-            if(p.count == 0){ 
+            if(p.count == 0){
                 p.total = 0; p.average = 0;}
             else{
                 p.total -= v.price; p.average = p.total / p.count; }
@@ -299,14 +290,14 @@ function show_avg_house_price(ndx){
         function () {
             return {count: 0,total: 0,average: 0};
         }
-        
+
     );
 
-    
+
     dc.bubbleChart("#bubble_chart")
-        .width(1200)
+        .width(1100)
         .height(400)
-        .margins({top: 10, right: 50, bottom: 50, left: 50})
+        .margins({top: 10, right: 50, bottom: 50, left: 68})
         .dimension(areaDim)
         .group(statsByArea)
         .keyAccessor(function (p) {return p.value.average;})
@@ -335,14 +326,14 @@ function show_price_to_floor_area(ndx){
     });
     var xGroup = priceDim.group();
     var fakeGroup = remove_empty_bins(xGroup);
-    
+
     var minArea = areaDim.bottom(1)[0].surface;
     var maxArea = areaDim.top(1)[0].surface;
-    
+
     dc.scatterPlot("#surface_price")
         .dimension(priceDim)
         .group(fakeGroup)
-        .width(1200)
+        .width(1150)
         .height(400)
         .transitionDuration(500)
         .x(d3.scale.linear().domain([0, maxArea+0.1*maxArea]))
@@ -372,23 +363,25 @@ function show_bp_area_vs_price(ndx){
             return [];
         }
     );
-    
+
     var commasFormatter = d3.format(",.0f");
-    
+
     dc.boxPlot("#box-plot-area-vs-price")
         .dimension(areaDim)
         .group(areaGroup)
         .width(1200)
         .height(400)
         .transitionDuration(500)
-        .margins({top: 20, right: 80, bottom: 30, left: 80})
+        .margins({top: 20, right: 80, bottom: 30, left: 70})
+        .clipPadding(15)
         .elasticY(true)
         .elasticX(true)
+        .yAxisLabel("Asking Price")
         .tickFormat(function(d) { return "€" + commasFormatter(d); })
         .yAxisPadding(100000)
         .renderHorizontalGridLines(true)
         ;
-    
+
 }
 
 
@@ -399,7 +392,7 @@ function show_table_of_properties(ndx){
     var filteredTotal = ndx.groupAll();
     var previousFilteredTotalValue = filteredTotal.value();
     var studentDim = ndx.dimension(dc.pluck('url'));
-    
+
     var table = dc.dataTable("#results-table")
                     .dimension(studentDim)
                     .group(function(d){
@@ -414,7 +407,7 @@ function show_table_of_properties(ndx){
                         },
                         "area",
                         {
-                            label: "View on Google Maps",
+                            label: "View on Map",
                             format: function(d) { return '<a href=\"http://maps.google.com/maps?z=11&t=m&q=loc:' + d.latitude + '+' + d.longitude +"\" target=\"_blank\"><i class='fas fa-map-marked-alt'></i></a>"}},
                         {
                             label: "Price",
@@ -424,10 +417,13 @@ function show_table_of_properties(ndx){
                             label: "Floor Area",
                             format: function (d) {return Math.floor(d.surface)+' m2';}
                         },
-
+                        {
+                            label: "Price/m2",
+                            format: function (d) {return '€ '+ Math.floor(d.price/d.surface).toLocaleString();}
+                        },
                     ]
                 );
-    
+
     function updatePaginationElements() {
         d3.select('#begin').text(offset);
         d3.select('#end').text(
@@ -467,6 +463,6 @@ function show_table_of_properties(ndx){
         updateTable();
         table.redraw();
     }
-    $('#previous').on('click', previous)    
-    
+    $('#previous').on('click', previous)
+
 }

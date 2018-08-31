@@ -11,8 +11,9 @@
     background-color: white;
 }
 
-#main {
-    margin-top: 25px;
+#main h2, #main2 h2{
+    padding-top: 25px;
+    color: #3362b9;
 }
 
 h2>span {
@@ -31,25 +32,25 @@ h2>span {
 
 .bgimage {
   width:100%;
-  height:330px;
+  height:26vw;
   background: url('../images//Property-Market-min-1920x480.jpeg');
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
   margin-top: 120px;
   background-position-y: 120px;
+  background-size: contain;
 }
 
 .bgimage2 {
     width: 100%;
-    height: 330px;
+    height: 26vw;
     background: url("../images/dublinBay.jpg");
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
     background-attachment: fixed;
-    background-position-y: 120px;
     background-size: contain;
-    background-size: 2300px;
+    background-size: 180%;
 }
 
 
@@ -66,29 +67,26 @@ h2>span {
     left: -27px;
 }
 
-#number_of_beds>svg,#number_of_baths>svg,#property_type>svg,#open-viewing>svg {
+/*#number_of_beds>svg,#number_of_baths>svg,#property_type>svg,#property_value>svg {
     position: relative;
     right: 56px;
     top:-25px;
-}
+}*/
 
-#main2 {
-    margin-top: 35px;
-}
 
 th.dc-table-head {
     width: 175px;
 }
 
-td.dc-table-column._3, td.dc-table-column._4  {
+td.dc-table-column._3, td.dc-table-column._4 , td.dc-table-column._5  {
     text-align: right;
 }
 
-th.dc-table-head:nth-child(4), th.dc-table-head:nth-child(5) {
+th.dc-table-head:nth-child(4), th.dc-table-head:nth-child(5), th.dc-table-head:nth-child(6) {
     text-align: right;
 }
 #results-table {
-    margin-left: 50px;
+    /*margin-left: 50px;*/
 }
 i.fas.fa-home, i.fas.fa-dollar-sign {
     font-size: 80px;
@@ -122,9 +120,147 @@ text.box:nth-of-type(2) {
 
 i.fas.fa-map-marked-alt {
     font-size: 20px;
-    padding-left: 66px;
+    padding-left: 30%;
 }
 
 tr.dc-table-group {
     display: none;
+}
+h3 {
+    margin-top: 1.5rem;
+}
+/*.row {
+    padding: 0;
+}
+.col-8,.col-7, .col-5,.col-3 {
+    padding: 0;
+}*/
+.modal2 {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    outline: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: block;
+    background-color: #00000047;
+}
+
+#screen-size-modal{
+    display: none
+}
+
+
+/*---- MEDIA QUERUIES --------------------------------------*/
+
+@media (max-width: 1199.98px) {
+    .container{
+        max-width: 90%
+    }
+    .bgimage {
+        background-size: contain;
+    }
+    div#bubble_chart {
+    transform: scale(0.97);
+    transform-origin: left;
+    }
+    div#surface_price {
+            transform: scale(0.95);
+            transform-origin: left;
+    }
+    div#box-plot-area-vs-price {
+            transform: scale(0.95);
+            transform-origin: left;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .container{
+        max-width: 90%
+    }
+    div#bubble_chart {
+        transform: scale(0.82);
+        transform-origin: left;
+    }
+    div#surface_price {
+            transform: scale(0.79);
+            transform-origin: left;
+    }
+    div#box-plot-area-vs-price {
+            transform: scale(0.79);
+            transform-origin: left;
+    }
+    .bgimage2 {
+        background-size: 210%;
+        background-position-x: 38%;
+        height: 30vw;
+    }
+    #screen-size-modal{
+    display: block
+    }
+}
+
+@media (max-width: 767.98px) {
+    .container{
+        max-width: 90%
+    }
+    div#bubble_chart {
+        transform: scale(0.64);
+        transform-origin: left;
+    }
+    div#surface_price {
+            transform: scale(0.60);
+            transform-origin: left;
+    }
+    div#box-plot-area-vs-price {
+            transform: scale(0.60);
+            transform-origin: left;
+    }
+    tbody {
+        font-size: 13px;
+    }
+    .bgimage2 {
+        background-size: 255%;
+        background-position-x: 32%;
+        height: 35vw;
+    }
+    .table td, .table th {
+        padding: .5rem;
+    }
+}
+@media (max-width: 575.98px) {
+    .container{
+        max-width: 95%
+    }
+    div#auctioneer {
+        position: relative;
+        left: -30px;
+    }
+    div#ber_value {
+        position: relative;
+        left: 50px;
+    }
+    div#bubble_chart {
+        transform: scale(0.5);
+        transform-origin: left;
+    }
+    div#surface_price {
+            transform: scale(0.48);
+            transform-origin: left;
+    }
+    div#box-plot-area-vs-price {
+            transform: scale(0.48);
+            transform-origin: left;
+    }
+    tbody {
+        font-size: 9px;
+    }
+    .bgimage2 {
+        background-size: 338%;
+        background-position-x: 32%;
+        height: 45vw;
+    }
 }
