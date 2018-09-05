@@ -135,9 +135,6 @@ This is a useful chart for getting a quick visual representation of the average 
 ##### Scatter Plot (What is the Correlation between House Price and Floor Area?)
 Shows an individual data point for each property and plots it on the X and Y axis.  
 As can be seen there is a rough correlation of price vs. area.
-
-ARE WE TALKING A 45 DEGREE LINE HERE? MAKE THIS CLEARER
-
 If there is a trend line between house price and floor area a user can see what properties might be deemed better value as they would fall below this line.
 
 ##### Box Plot (What is the Price Spread for an Area?)
