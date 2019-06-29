@@ -7,7 +7,7 @@ queue()
 
 
 //--------------------------------------------------- SECTION 02 - CROSSFILTER THE DATA AND PARSE
-function makeGraphs(error, propertyData){
+function makeGraphs(error, propertyData) {
     var ndx = crossfilter(propertyData);
 
     var helloDim = ndx.dimension(dc.pluck('price_type'));
@@ -40,109 +40,136 @@ function makeGraphs(error, propertyData){
 
 //--------------------------------------------------- SECTION 03 - CODE FOR CHARTS
 //-- ROW CHART - PROPERTY AREAS
-function show_areas_of_properties(ndx){
+
+function show_areas_of_propertiess(ndx) {
     var dim = ndx.dimension(dc.pluck('area'));
     var group = dim.group();
 
     dc.rowChart("#areas_of_properties")
         .width(600)
-        .height(330)
+        .height(set1.size * 30)
         .dimension(dim)
         .group(group)
+        .elasticX(true);
+    // .x(d3.scale.ordinal().domain('area'))
+    // .xAxis().ticks(4);
+}
+
+// var revenueColors = ["#d9ef8b", "#a6d96a", "#66bd63", "#D9EDF7", "#ccece6", "#e6f5d0", "#b8e186", "#7fbc41", "#99d8c9", "#41ae76", "#238b45", "#ccebc5", "#e0f3db", "#78c679", "#41ab5d"];
+
+
+function show_areas_of_properties(ndx) {
+    var revenueBySource = ndx.dimension(function(d) {
+        return d.area;
+    });
+    var revenueBySourceGroup = revenueBySource.group();
+
+    dc.rowChart("#areas_of_properties")
+        .width(600)
+        .height(800)
+        .margins({ top: 20, left: 10, right: 10, bottom: 20 })
+        .dimension(revenueBySource)
+        .group(revenueBySourceGroup)
+        .renderLabel(true)
         .elasticX(true)
-        .xAxis().ticks(4);
+        .transitionDuration(750)
+        .gap(9)
+        .title(function(d) { return ""; })
+        .x(d3.scale.linear().domain(["Ballsbridge", "Churchtown", "Clonskeagh", "Dartry", "Donnybrook", "Dublin 2", "Dublin 4", "Dublin 8", "Dundrum", "Goatstown", "Harold's Cross", "Harold\\'s Cross", "Inchicore", "Irishtown", "Kilmainham", "Kimmage", "Merrion", "Milltown", "Portobello", "Ranelagh", "Rathfarnham", "Rathgar", "Rathmines", "Rialto", "Ringsend", "Sandymount", "South Circular Road", "Templeogue", "Terenure", "The Coombe", "Windy Arbour"])) 
+
+        .xAxis().ticks(5).tickFormat(d3.format("s"));
+
+    
 }
 
 
 //-- NUMBER - AVERAGE HOUSE PRICE
-function show_average_price(ndx){
+function show_average_price(ndx) {
     var averageHousePrice = ndx.groupAll().reduce(
-        function (p,v) {
+        function(p, v) {
             p.count++;
             p.total += v.price;
             p.average = p.total / p.count;
             return p;
         },
-        function (p,v) {
+        function(p, v) {
             p.count--;
-            if(p.count == 0){
+            if (p.count == 0) {
                 p.total = 0;
                 p.average = 0;
 
             }
-            else{
+            else {
                 p.total -= v.price;
                 p.average = p.total / p.count;
             }
             return p;
         },
-        function () {
-            return {count: 0,total: 0,average: 0};
+        function() {
+            return { count: 0, total: 0, average: 0 };
         }
 
     );
 
     dc.numberDisplay("#average_property_price")
         // .formatNumber(d3.format(".2"))
-        .valueAccessor(function (d){
-            if (d.count == 0){
+        .valueAccessor(function(d) {
+            if (d.count == 0) {
                 return 0;
             }
-            else{
+            else {
                 return d.average;
             }
         })
-        .group(averageHousePrice)
-        ;
+        .group(averageHousePrice);
 }
 
 //-- NUMBER - PRICE PER M2
-function show_price_per_m2(ndx){
+function show_price_per_m2(ndx) {
     var averageHousePrice = ndx.groupAll().reduce(
-        function (p,v) {
+        function(p, v) {
             p.count++;
             p.total += v.price;
             p.floor += v.surface;
             p.average = p.total / p.floor;
             return p;
         },
-        function (p,v) {
+        function(p, v) {
             p.count--;
-            if(p.count == 0){
+            if (p.count == 0) {
                 p.total = 0;
                 p.average = 0;
 
             }
-            else{
+            else {
                 p.total -= v.price;
                 p.floor -= v.surface;
                 p.average = p.total / p.floor;
             }
             return p;
         },
-        function () {
-            return {count: 0,total: 0,floor:0,average: 0};
+        function() {
+            return { count: 0, total: 0, floor: 0, average: 0 };
         }
 
     );
 
     dc.numberDisplay("#price_per_m2")
         // .formatNumber(d3.format(".2"))
-        .valueAccessor(function (d){
-            if (d.count == 0){
+        .valueAccessor(function(d) {
+            if (d.count == 0) {
                 return 0;
             }
-            else{
+            else {
                 return d.average;
             }
         })
-        .group(averageHousePrice)
-        ;
+        .group(averageHousePrice);
 }
 
 
 //-- BAR CHART - AUCTIONEER
-function show_auctioneer(ndx){
+function show_auctioneer(ndx) {
     var dim = ndx.dimension(dc.pluck('seller_name'));
     var group = dim.group();
 
@@ -154,13 +181,12 @@ function show_auctioneer(ndx){
         .elasticX(true)
         .cap(10)
         // .xAxisLabel("Number of advertised properties")
-        .xAxis().ticks(4)
-        ;
+        .xAxis().ticks(4);
 }
 
 
 //-- BAR CHART - BER CLASS
-function show_ber_index(ndx){
+function show_ber_index(ndx) {
     var dim = ndx.dimension(dc.pluck('ber_classification'));
     var group = dim.group();
     var fakeGroup = remove_empty_bins(group);
@@ -177,9 +203,10 @@ function show_ber_index(ndx){
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal);
 }
+
 function remove_empty_bins(source_group) {
     return {
-        all:function () {
+        all: function() {
             return source_group.all().filter(function(d) {
                 return d.value != 0;
             });
@@ -189,7 +216,7 @@ function remove_empty_bins(source_group) {
 
 
 //-- PIE CHARTS
-function show_number_bedrooms(ndx){
+function show_number_bedrooms(ndx) {
     var dim = ndx.dimension(dc.pluck('beds'));
     var group = dim.group();
 
@@ -201,7 +228,8 @@ function show_number_bedrooms(ndx){
         .group(group)
         .minAngleForLabel(.2);
 }
-function show_number_bathrooms(ndx){
+
+function show_number_bathrooms(ndx) {
     var dim = ndx.dimension(dc.pluck('bathrooms'));
     var group = dim.group();
 
@@ -213,7 +241,8 @@ function show_number_bathrooms(ndx){
         .group(group)
         .minAngleForLabel(.2);
 }
-function show_property_type(ndx){
+
+function show_property_type(ndx) {
     var dim = ndx.dimension(dc.pluck('property_type'));
     var group = dim.group();
 
@@ -225,18 +254,19 @@ function show_property_type(ndx){
         .group(group)
         .minAngleForLabel(.2);
 }
-function show_property_value(ndx){
-    var dim = ndx.dimension(function(d){
-        if (d['price'] < 500000){
+
+function show_property_value(ndx) {
+    var dim = ndx.dimension(function(d) {
+        if (d['price'] < 500000) {
             return "< 500k";
         }
-        else if (d['price'] < 750000){
+        else if (d['price'] < 750000) {
             return "500k to 750k";
         }
-        else if (d['price'] < 1200000){
+        else if (d['price'] < 1200000) {
             return "750k to 1.2M";
         }
-        else{
+        else {
             return '> 1.2M +';
         }
     });
@@ -254,37 +284,43 @@ function show_property_value(ndx){
 
 
 //-- NUMBER CHART - HOW MANY FILTER
-function show_number_filtered(ndx){
-	var group = ndx.groupAll();
+function show_number_filtered(ndx) {
+    var group = ndx.groupAll();
 
     dc.dataCount(".dc-data-count")
         .dimension(ndx)
-    	.group(group);
+        .group(group);
 }
 
 
 //-- BUBBLE CHART - NUMBER OF HOUSES VS AVG HOUSE PRICE PER LOCATION
-function show_avg_house_price(ndx){
+function show_avg_house_price(ndx) {
     var areaDim = ndx.dimension(dc.pluck('area'));
     var statsByArea = areaDim.group().reduce(
         // increase counter
-        function (p,v) {
-            p.count++; p.total += v.price; p.average = p.total / p.count;
+        function(p, v) {
+            p.count++;
+            p.total += v.price;
+            p.average = p.total / p.count;
             return p;
         },
 
         // decrease counter
-        function (p,v) {
+        function(p, v) {
             p.count--;
-            if(p.count == 0){
-                p.total = 0; p.average = 0;}
-            else{
-                p.total -= v.price; p.average = p.total / p.count; }
+            if (p.count == 0) {
+                p.total = 0;
+                p.average = 0;
+            }
+            else {
+                p.total -= v.price;
+                p.average = p.total / p.count;
+            }
             return p;
         },
         // waanted results
-        function () {
-            return {count: 0,total: 0,average: 0};
+        function() {
+            return { count: 0, total: 0, average: 0 };
         }
 
     );
@@ -293,12 +329,12 @@ function show_avg_house_price(ndx){
     dc.bubbleChart("#bubble_chart")
         .width(1100)
         .height(400)
-        .margins({top: 10, right: 50, bottom: 50, left: 68})
+        .margins({ top: 10, right: 50, bottom: 50, left: 68 })
         .dimension(areaDim)
         .group(statsByArea)
-        .keyAccessor(function (p) {return p.value.average;})
-        .valueAccessor(function (p) {return p.value.count;})
-        .radiusValueAccessor(function (p) {
+        .keyAccessor(function(p) { return p.value.average; })
+        .valueAccessor(function(p) { return p.value.count; })
+        .radiusValueAccessor(function(p) {
             return p.value.average;
         })
         .x(d3.scale.linear().domain([0, 5000000]))
@@ -315,9 +351,9 @@ function show_avg_house_price(ndx){
 
 
 //-- SCATTER PLOT - HOUSE PRICE VS FLOOR AREA
-function show_price_to_floor_area(ndx){
+function show_price_to_floor_area(ndx) {
     var areaDim = ndx.dimension(dc.pluck("surface"));
-    var priceDim = ndx.dimension(function(d){
+    var priceDim = ndx.dimension(function(d) {
         return [d.surface, d.price];
     });
     var xGroup = priceDim.group();
@@ -327,31 +363,33 @@ function show_price_to_floor_area(ndx){
     var maxArea = areaDim.top(1)[0].surface;
 
     dc.scatterPlot("#surface_price")
+        .height(400)
+        .width(1150)
+        .x(d3.scale.linear().domain([0, maxArea + 0.1 * maxArea]))
+        .elasticX(true)
+        .elasticY(true)
         .dimension(priceDim)
         .group(fakeGroup)
-        .width(1150)
-        .height(400)
         .transitionDuration(500)
-        .x(d3.scale.linear().domain([0, maxArea+0.1*maxArea]))
         .symbolSize(5)
-        // .clipPadding(5)
+        .clipPadding(10)
         .yAxisLabel("Asking Price")
         .xAxisLabel("Surface Area (m2)")
-        .rescale(true)
-        .yAxisPadding(200000)
-        .margins({top: 10, right: 50, bottom: 60, left: 80});
+        // .rescale(true)
+        // .yAxisPadding(200000)
+        .margins({ top: 10, right: 50, bottom: 60, left: 80 });
 }
 
 
 //-- BOX PLOT - AREA VS PRICE
-function show_bp_area_vs_price(ndx){
+function show_bp_area_vs_price(ndx) {
     var areaDim = ndx.dimension(dc.pluck('area'));
     var areaGroup = areaDim.group().reduce(
-        function(p,v) {
+        function(p, v) {
             p.push(v.price);
             return p;
         },
-        function(p,v) {
+        function(p, v) {
             p.splice(p.indexOf(v.price), 1);
             return p;
         },
@@ -368,7 +406,7 @@ function show_bp_area_vs_price(ndx){
         .width(1200)
         .height(400)
         .transitionDuration(500)
-        .margins({top: 20, right: 80, bottom: 30, left: 70})
+        .margins({ top: 20, right: 80, bottom: 30, left: 70 })
         .clipPadding(15)
         .elasticY(true)
         .elasticX(true)
@@ -380,7 +418,7 @@ function show_bp_area_vs_price(ndx){
 
 
 //-- TABLE
-function show_table_of_properties(ndx){
+function show_table_of_properties(ndx) {
     const ITEMS_PER_PAGE = 10;
     var offset = 0;
     var filteredTotal = ndx.groupAll();
@@ -388,40 +426,39 @@ function show_table_of_properties(ndx){
     var studentDim = ndx.dimension(dc.pluck('url'));
 
     var table = dc.dataTable("#results-table")
-                    .dimension(studentDim)
-                    .group(function(d){
-                        return '';
-                    })
-                    .width(500)
-                    .size(Infinity)
-                    .columns([
-                        {
-                            label: "View Advert",
-                            format: function (d) {return `<a href="${d.url}" target="_blank">Daft.ie  <i class="fas fa-external-link-alt"></i></a>`;}
-                        },
-                        "area",
-                        {
-                            label: "View on Map",
-                            format: function(d) { return '<a href=\"http://maps.google.com/maps?z=11&t=m&q=loc:' + d.latitude + '+' + d.longitude +"\" target=\"_blank\"><i class='fas fa-map-marked-alt'></i></a>"}},
-                        {
-                            label: "Price",
-                            format: function (d) {return '€ '+ d.price.toLocaleString();}
-                        },
-                        {
-                            label: "Floor Area",
-                            format: function (d) {return Math.floor(d.surface)+' m2';}
-                        },
-                        {
-                            label: "Price/m2",
-                            format: function (d) {return '€ '+ Math.floor(d.price/d.surface).toLocaleString();}
-                        },
-                    ]
-                );
+        .dimension(studentDim)
+        .group(function(d) {
+            return '';
+        })
+        .width(500)
+        .size(Infinity)
+        .columns([{
+                label: "View Advert",
+                format: function(d) { return `<a href="${d.url}" target="_blank">Daft.ie  <i class="fas fa-external-link-alt"></i></a>`; }
+            },
+            "area",
+            {
+                label: "View on Map",
+                format: function(d) { return '<a href=\"http://maps.google.com/maps?z=11&t=m&q=loc:' + d.latitude + '+' + d.longitude + "\" target=\"_blank\"><i class='fas fa-map-marked-alt'></i></a>" }
+            },
+            {
+                label: "Price",
+                format: function(d) { return '€ ' + d.price.toLocaleString(); }
+            },
+            {
+                label: "Floor Area",
+                format: function(d) { return Math.floor(d.surface) + ' m2'; }
+            },
+            {
+                label: "Price/m2",
+                format: function(d) { return '€ ' + Math.floor(d.price / d.surface).toLocaleString(); }
+            },
+        ]);
 
     function updatePaginationElements() {
         d3.select('#begin').text(offset);
         d3.select('#end').text(
-            Math.min(offset+ITEMS_PER_PAGE-1, filteredTotal.value()));
+            Math.min(offset + ITEMS_PER_PAGE - 1, filteredTotal.value()));
         d3.select('#size').text(filteredTotal.value());
         d3.select('#previous').attr(
             'disabled', offset <= 0 ? "true" : null);
@@ -431,7 +468,7 @@ function show_table_of_properties(ndx){
 
     function updateTable() {
         table.beginSlice(offset);
-        table.endSlice(offset+ITEMS_PER_PAGE);
+        table.endSlice(offset + ITEMS_PER_PAGE);
         updatePaginationElements();
     }
     updateTable();
@@ -452,6 +489,7 @@ function show_table_of_properties(ndx){
         table.redraw();
     }
     $('#next').on('click', next);
+
     function previous() {
         offset -= ITEMS_PER_PAGE;
         updateTable();
@@ -459,3 +497,19 @@ function show_table_of_properties(ndx){
     }
     $('#previous').on('click', previous);
 }
+
+
+
+// GENERAL FUNCTION =================================
+
+let set1 = new Set();
+var itens = null;
+$.getJSON("data/dubsouth.json", function(data) {
+    itens = data;
+    itens.forEach(function(item) {
+        set1.add(item["area"]);
+    });
+});
+
+var list_of_area = Array.from(set1);
+console.log(list_of_area);

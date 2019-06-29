@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css">
+    <link rel="stylesheet" href="static/css/dc.min.css" type="text/css" />
+    <link rel="stylesheet" href="static/css/custom.css" type="text/css" />
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="static/js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+
+    <!-- d3.js first, then crossfilter.js, then dc.js, then queue.js, then graph.js -->
+    <script src="static/js/d3.min.js"></script>
+    <script src="static/js/crossfilter.min.js"></script>
+    <script src="static/js/dc.min.js"></script>
+    <script src="static/js/queue.min.js"></script>
+    <script src="static/js/graph.1.js"></script>
+
+    <link rel="shortcut icon" type="image/png" href="https://c1.dmstatic.com/861/apple-touch-icon-precomposed.png">
+    <title>Dublin Property Dashboard</title>
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light">
+        <div class="container">
+            <h2>Property Market in <span>Dublin</span></h2>
+            <img src="https://c1.dmstatic.com/79a0386784cbc4e591ac1/frontend/images/logo@2x.png" height="41" width="129" alt="Daft.ie">
+        </div>
+    </nav>
+
+    <div id="data-count" class="fixed-top dc-data-count">
+        <div class="container">
+            <span class="filter-count"></span> properties selected out of <span class="total-count"></span> properties |
+            <a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
+        </div>
+    </div>
+
+    <section class="bgimage"></section>
+
+    <div class="container" id="main">
+        <h2>Select Your <span>Preferences</span></h2>
+        <div class="row" id="charts01">
+            <!--Areas-->
+            <div class="col-12 col-lg-7">
+                <h3>Areas</h3>
+                <div id="areas_of_properties"></div>
+            </div>
+            <!--BER-->
+            <div class="col-12 col-lg-5">
+                <h3>BER Value</h3>
+                <div id="ber_value"></div>
+            </div>
+        </div>
+
+        <!--PIE CHARTS-->
+        <div class="row" id="charts02">
+            <div class="col-6 col-lg-3">
+                <h3>Beds</h3>
+                <div id="number_of_beds" class="pie"></div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <h3>Baths</h3>
+                <div id="number_of_baths" class="pie"></div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <h3>Property Type</h3>
+                <div id="property_type" class="pie"></div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <h3>Property Value</h3>
+                <div id="property_value" class="pie"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <section class="bgimage2"></section>
+
+    <div class="container" id="main2">
+        <h2>Your Filtered<span>Results</span></h2>
+        <!--Auctioneer-->
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <h3>Auctioneer</h3>
+                <div id="auctioneer"></div>
+            </div>
+            <!--Average House Price-->
+            <div class="col-12 col-lg-4">
+                <div class="col-12">
+                    <h3>Average House Price</h3>
+                    <i id="average_property_price" class="fas fa-home"></i> <span class="number-box"></span>
+                </div>
+                <div class="col-12" id="price-per-m2">
+                    <h3>Price per m2</h3>
+                    <i id="price_per_m2" class="fas fa-dollar-sign"></i> <span class="number-box"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Bubble Chart-->
+        <div id="bubbleChart" class="row col-12">
+            <h3>What is the Average House Price for an Area?</h3>
+            <div id="bubble_chart"></div>
+        </div>
+
+        <!--Scatter Plot-->
+        <div id="scatterPlot" class="row col-12">
+            <h3>What is the Correlation between House Price and Floor Area?</h3>
+            <div id="surface_price"></div>
+        </div>
+
+
+        <!--Box Plot-->
+        <div id="boxPlot" class="row col-12">
+            <h3>What is the Price Spread for an Area?</h3>
+            <div id="box-plot-area-vs-price"></div>
+        </div>
+
+        <!--Table-->
+        <div id="table" class="row">
+            <h3>Filtered Results</h3>
+            <table id="results-table" class="col-12 table"></table>
+            <div class="col-12" id="paging">
+                <article>Showing <span id="begin"></span>-<span id="end"></span> of <span id="size"></span>.</article>
+                <button id="previous" type="button" class="btn btn-primary"><i class="fas fa-angle-left"></i> Previous</button>
+                <button id="next" type="button" class="btn btn-primary">Next <i class="fas fa-angle-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal2 fade show" id="screen-size-modal" tabindex="10" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalCenterTitle">Dear User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" onclick="document.getElementById('screen-size-modal').style.display='none'" >&times;</span>
+        </button>
+                </div>
+                <div class="modal-body">
+                    You are viewing this website on a tablet or mobile device. For best user expereience please visit the website on a desktop.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="document.getElementById('screen-size-modal').style.display='none'" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

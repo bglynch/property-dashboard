@@ -6,7 +6,8 @@ import json
 from functions import location, format_html_to_xml_soup, get_number_of_pagination_pages, get_urls_for_each_page, get_data_from_each_page, parse_the_data, filter_data
 
 print("===================URL======================")
-URL = location('dublin', 'dublin-4')
+# URL = location('dublin-city', 'dublin-14,dublin-2,dublin-4,dublin-6,dublin-6w,dublin-8')
+URL = 'https://www.daft.ie/dublin-city/property-for-sale/dublin-14,dublin-2,dublin-4,dublin-6,dublin-6w/?ad_type=sale&advanced=1&s%5Bmxp%5D=400000&s%5Badvanced%5D=1&searchSource=sale'
 print(URL)
 
 
@@ -35,6 +36,6 @@ unfiltered_data = parse_the_data(raw_data)
 data = filter_data(unfiltered_data)
 print(data)
 
-with open('data/cork.json', 'w') as fout:
+with open('data/dubsouthapts.json', 'w') as fout:
     json.dump(data, fout, sort_keys=True,indent=4, separators=(',', ': '))
 

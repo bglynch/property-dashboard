@@ -57,7 +57,7 @@ def get_data_from_each_page(urls):
         # ber_number = parsed_single_page.find("div", attrs={"id": "smi-ber-details"}).next_sibling
         # number_from_text = [int(s) for s in ber_number.split() if s.isdigit()]
         
-        json_string = re.findall(r"{\"\w.*\"}", parsed_single_page.text)[0].split(',"')
+        json_string = re.findall(r"{\"\w.*\"}", parsed_single_page.text)[0].split('"')
         for i in json_string:
             parsed_list.append(i.replace('"', '').replace('{', '').replace('}', ''))
         
